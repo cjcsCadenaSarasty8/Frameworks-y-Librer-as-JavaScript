@@ -24,6 +24,14 @@ body{
   font-size: 3em;
   color: #DCFF0E;
   width: 100%;
+  animation-name: CambioColor;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes CambioColor {
+    from {color: red;}
+    to {color: #DCFF0E;}
 }
 
 .panel-tablero{
@@ -34,6 +42,7 @@ body{
   height: 700px;
   display: flex;
   flex-flow: row wrap;
+  transition: width 2s,height 2s, border 5s;
 }
 
 .panel-score{
@@ -42,8 +51,16 @@ body{
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-between;
+  transition: width 2s;
 }
 
+.TituloFinJuego{
+  text-align: center;
+  font-family: gameFont;
+  color: #DCFF0E;
+  opacity: 0;
+  transition: opacity 3s;
+}
 
 .score, .moves, .time{
   text-align: center;

@@ -4,6 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,user-scalable=no">
   <title>Juego</title>
+  <script type="text/javascript" src="js/jquery-3.0.0.js" ></script>
+  <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="js/timer.js"></script>
+  <script type="text/javascript" src="js/app.js"></script>
   <link rel="stylesheet" href="css/jquery-ui.min.css">
   <link rel="stylesheet" href="css/estilos.css">
 
@@ -13,7 +17,7 @@
   <div class="main-container">
     <h1 class="main-titulo">Match Game</h1>
 
-    <div class="panel-tablero">
+    <div class="panel-tablero" id="Tablero">
       <div class="col-1">
 
 
@@ -38,7 +42,8 @@
       </div>
     </div>
 
-    <div class="panel-score">
+    <div class="panel-score" id="PanelScore">
+      <h1 class="TituloFinJuego">Juego Terminado</h1>
       <div class="score">
         <h2 class="data-titulo">Puntuación</h2>
         <span class="data-info" id="score-text">0</span>
@@ -52,19 +57,10 @@
         <div class="data-info" id="timer">02:00</div>
       </div>
       <div class="buttons">
-        <button class="btn-reinicio">Iniciar</button>
+        <button class="btn-reinicio" id="btn-reinicio" onclick="Conteo()" >Iniciar</button>
       </div>
     </div>
 
   </div>
-
-
-
-
-
-  <script type="text/javascript" src="js/jquery-3.0.0.js" ></script>
-  <script type="text/javascript" src="js/jquery-ui.min.js"></script>
-  <script type="text/javascript" src="js/timer.js"></script>
-  <script type="text/javascript" src="js/app.js"></script>
 </body>
 </html>
