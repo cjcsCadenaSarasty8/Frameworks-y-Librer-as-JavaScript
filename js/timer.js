@@ -48,9 +48,15 @@ function FinDelJuego(){
   Tablero.style.width = '0%';
   Tablero.style.height = '0px';
   Tablero.style.border = '0px';
-  //Tablero.style.border = '0px';
+  var Tablero = document.getElementsByClassName('time');
+  Tablero[0].style.width = '0%';
+  Tablero[0].style.height = '0px';
+  Tablero[0].style.border = '0px';
+  Tablero[0].style.display = 'none';
   var TableroPuntaje = document.getElementById('PanelScore');
   TableroPuntaje.style.width = '100%';
   var TableroPuntaje = document.getElementsByClassName('TituloFinJuego');
   TableroPuntaje[0].style.opacity = '1';
+  TableroPuntaje[0].style.display = 'block';
+
 }
