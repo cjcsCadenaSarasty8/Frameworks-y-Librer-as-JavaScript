@@ -1,13 +1,14 @@
-var Segundo=5;
+var Segundo=0;
 var SegundoText="";
-var Minuto=0;
+var Minuto=2;
 var MinutoText="";
 
 var Contador=document.getElementById('timer');
-function Conteo(){
+function InicioJuego(){
   if(document.getElementById('btn-reinicio').innerHTML=="Iniciar"){
     document.getElementById('btn-reinicio').innerHTML="Reiniciar";
-    ControlConteo();
+    DibujarTablero();
+    //ControlConteo();
   }else{
     location.reload();
   }

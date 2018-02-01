@@ -121,14 +121,32 @@ div[class^='col']{
   flex-flow: column wrap;
   justify-content: flex-end;
   align-items: center;
+
 }
+
 
 div[class^='col'] .caja{
   width: 100%;
   height: 100%;
-  display: flex;
+  animation-name: movimiento;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+  position: relative;
 }
-.droptarget{
+
+@keyframes movimiento {
+
+    from {
+
+        flex-direction: column;
+        top: -100px;
+      }
+      to{
+        top:0px;
+      }
+}
+
+.contenedor{
   width: 100%;
   height: 97px;
 }
