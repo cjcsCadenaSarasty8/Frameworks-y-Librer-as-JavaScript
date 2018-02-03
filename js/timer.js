@@ -8,7 +8,7 @@ function InicioJuego(){
   if(document.getElementById('btn-reinicio').innerHTML=="Iniciar"){
     document.getElementById('btn-reinicio').innerHTML="Reiniciar";
     DibujarTablero();
-    //ControlConteo();
+    ControlConteo();
   }else{
     location.reload();
   }
