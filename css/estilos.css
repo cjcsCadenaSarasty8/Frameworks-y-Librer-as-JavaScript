@@ -128,22 +128,6 @@ div[class^='col']{
 div[class^='col'] .caja{
   width: 100%;
   height: 100%;
-  animation-name: movimiento;
-  animation-duration: 1s;
-  animation-iteration-count: 1;
-  position: relative;
-}
-
-@keyframes movimiento {
-
-    from {
-
-        flex-direction: column;
-        top: -100px;
-      }
-      to{
-        top:0px;
-      }
 }
 
 .contenedor{
@@ -157,6 +141,22 @@ div[class^='col'] img{
   cursor:auto;
   position: sticky;
   transition: top 2s;
+  animation-name: movimiento;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+  position: static;
+}
+
+@keyframes movimiento {
+
+    from {
+        position: relative;
+        flex-direction: column;
+        top: -100px;
+      }
+      to{
+        top:0px;
+      }
 }
 
 .elemento{

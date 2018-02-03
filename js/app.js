@@ -2,32 +2,31 @@ var XInicial="";
 var YInicial="";
 var XFinal="";
 var YFinal="";
-var Dulces=new Array(7);
 var ContadorMovimientos=0;
+var ContadorPuntos=0;
   function DibujarTablero(){
 
     var NumeroDulce=0;
     var Retorno="";
     Contador=0;
-    for(var y=0;y<7;y++)
+    for(var x=0;x<7;x++)
     {
-      Dulces[y]=new Array(7);
       Retorno="";
-      for(var x=0;x<7;x++)
+      for(var y=0;y<7;y++)
       {
-        NumeroDulce=Math.floor((Math.random()*4)+1);
-        Dulces[y][x]='<img src="image/'+NumeroDulce+'.png">';
-        Retorno+='<div id="'+Contador+'" class="contenedor" ondrop="drop(event,'+y+','+x+')" ondragover="allowDrop(event)"><div id="'+y+','+x+'" class="caja" ondragstart="dragStart(event,'+y+','+x+')" ondragend="dragEnd(event)" draggable="true">'+Dulces[y][x]+'</div></div>';
+        NumeroDulce=Math.floor((Math.random()*6)+1);
+        Retorno+='<div id="'+Contador+'" class="contenedor" ondrop="drop(event,'+x+','+y+')" ondragover="allowDrop(event)"><div id="'+x+','+y+'" class="caja" ondragstart="dragStart(event,'+x+','+y+')" ondragend="dragEnd(event)" draggable="true">'+GenerarDulce()+'</div></div>';
         Contador++;
       }
-      var Columna=document.getElementsByClassName('col-'+(y+1));
+      var Columna=document.getElementsByClassName('col-'+(x+1));
       Columna[0].innerHTML='<div class="container" width="100%" height="100%">'+Retorno+'</div>';
     }
-    EliminaciónDulces();
+
+
 
   }
-  function dragStart(event,y,x) {
-      event.dataTransfer.setData("dulce", y+","+x);
+  function dragStart(event,x,y) {
+      event.dataTransfer.setData("dulce", x+","+y);
       console.log("Started to drag the p element");
   }
 
@@ -39,34 +38,149 @@ var ContadorMovimientos=0;
       event.preventDefault();
   }
 
-  function drop(event,y,x) {
-
+  function drop(event,x,y) {
       event.preventDefault();
       var data = event.dataTransfer.getData("dulce");
       Dulce=data.split(',');
-      YInicial=Dulce[0];
-      XInicial=Dulce[1];
-      YFinal=y;
+      XInicial=Dulce[0];
+      YInicial=Dulce[1];
       XFinal=x;
+      YFinal=y;
       if(XInicial!=XFinal || YInicial!=YFinal){
-        if(XInicial-XFinal==1 || XFinal-XInicial==1 || YInicial-YFinal==1 || YFinal-YInicial==1){
+        //if(XInicial-XFinal==1 || XFinal-XInicial==1 || YInicial-YFinal==1 || YFinal-YInicial==1){
+        if((XInicial-XFinal==1 && YInicial-YFinal==0) || (XInicial-XFinal==0 && YInicial-YFinal==1) ||
+           (XFinal-XInicial==1 && YFinal-YInicial==0) || (XFinal-XInicial==0 && YFinal-YInicial==1)){
           ContadorMovimientos++;
           document.getElementById('movimientos-text').innerHTML=ContadorMovimientos;
           var Dulce1=document.getElementById(data);
-          var Dulce2=document.getElementById(y+","+x);
+          var Dulce2=document.getElementById(x+","+y);
           var Temp=Dulce2.innerHTML;
           Dulce2.innerHTML=Dulce1.innerHTML;
           Dulce1.innerHTML=Temp;
-        }
-      }
-  }
-  function EliminaciónDulces(){
-      var ContadorRepeticiones=0;
-      for(var Fila=0;Fila<7;Fila++){
-        for(var Col=0;Col<7;Col++){
-          if(Col==0 && Fila==0){
-
+          if(!EliminaciónDulces()){
+            var Temp=Dulce2.innerHTML;
+            Dulce2.innerHTML=Dulce1.innerHTML;
+            Dulce1.innerHTML=Temp;
           }
         }
       }
   }
+  function EliminaciónDulces(){
+      var PosicionesEliminadas=[];
+      var Eliminacion=false;
+      var ReducirX=true;
+      var ReducirY=true;
+      var AumentarX=true;
+      var AumentarY=true;
+      for(var Fila=0;Fila<7;Fila++){
+        for(var Col=0;Col<7;Col++){
+          PosicionesEliminadas.push(Fila+","+Col);
+          var AdelanteX=Col;
+          do{
+          var Continuar=false;
+          AumentarX=AdelanteX<6;
+          if(AumentarX){
+          AdelanteX++;
+          }
+          var Dulce1=document.getElementById(Fila+","+Col).innerHTML;
+          var Dulce2=document.getElementById(Fila+","+AdelanteX).innerHTML;
+          if(Dulce1==Dulce2 && (Fila+","+Col)!=(Fila+","+AdelanteX) && AdelanteX){
+            PosicionesEliminadas.push(Fila+","+AdelanteX);
+            Continuar=true;
+          }
+          if(Continuar){
+            if(!(ReducirX ||AumentarX )){
+              Continuar=false;
+            }
+          }
+        }while (Continuar)
+        if(PosicionesEliminadas.length>=3){
+          console.log("Eliminacion primera");
+          Eliminacion=true;
+          break;
+        }else{
+          PosicionesEliminadas=[];
+        }
+        if(PosicionesEliminadas.length==0){
+            PosicionesEliminadas.push(Fila+","+Col);
+            var AdelanteY=Fila;
+            do{
+            var Continuar=false;
+
+            AumentarY=AdelanteY<6;
+            if(AumentarY){
+            AdelanteY++;
+            }
+            var Dulce1=document.getElementById(Fila+","+Col).innerHTML;
+            var Dulce2=document.getElementById(AdelanteY+","+Col).innerHTML;
+            if(Dulce1==Dulce2 && (Fila+","+Col)!=(AdelanteY+","+Col) && AdelanteY){
+              PosicionesEliminadas.push(AdelanteY+","+Col);
+              Continuar=true;
+            }
+            if(Continuar){
+              if(!(ReducirY ||AumentarY )){
+                Continuar=false;
+              }
+            }
+          }while (Continuar)
+          if(PosicionesEliminadas.length>=3){
+            console.log("Eliminacion Segunda");
+            Eliminacion=true;
+            break;
+          }else{
+            PosicionesEliminadas=[];
+          }
+        }
+
+        }
+        if(Eliminacion){
+          break;
+        }
+      }
+      if(Eliminacion){
+        for(var i=0; i<PosicionesEliminadas.length;i++){
+            //$( "#"+PosicionesEliminadas[i] ).effect( "explode","slow","5s" );
+          document.getElementById(PosicionesEliminadas[i]).innerHTML="";
+          ContadorPuntos+=20;
+          document.getElementById('score-text').innerHTML=ContadorPuntos;
+        }
+        RemplazarDulces(PosicionesEliminadas);
+      }
+        return Eliminacion;
+    }
+
+    function RemplazarDulces(PosicionesDulce){
+
+      for(var i=0; i<PosicionesDulce.length;i++){
+        var Coordenadas=PosicionesDulce[i].split(',');
+        var X=Coordenadas[0];
+        var Y=Coordenadas[1];
+        var SiguienteY=Y;
+          do
+          {
+            var Repetir=false;
+
+            if(Y==0)
+            {
+              document.getElementById(X+","+Y).innerHTML=GenerarDulce();
+              Repetir=false;
+            }else{
+            SiguienteY--;
+            if(document.getElementById(X+","+SiguienteY).innerHTML!=""){
+              document.getElementById(X+","+Y).innerHTML=document.getElementById(X+","+SiguienteY).innerHTML;
+              document.getElementById(X+","+SiguienteY).innerHTML="";
+              PosicionesDulce.push(X+","+SiguienteY);
+            }else{
+              Repetir=true;
+            }
+            }
+
+          }
+          while (Repetir);
+      }
+
+    }
+    function GenerarDulce(){
+      NumeroDulce=Math.floor((Math.random()*6)+1);
+      return '<img src="image/'+NumeroDulce+'.png">';
+    }
