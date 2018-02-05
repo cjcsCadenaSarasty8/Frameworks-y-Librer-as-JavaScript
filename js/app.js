@@ -57,14 +57,111 @@ var ContadorPuntos=0;
           var Temp=Dulce2.innerHTML;
           Dulce2.innerHTML=Dulce1.innerHTML;
           Dulce1.innerHTML=Temp;
-          if(!EliminaciónDulces()){
+          //if(false){
+          if(EliminacionMovimiento(XFinal,YFinal)){
             var Temp=Dulce2.innerHTML;
             Dulce2.innerHTML=Dulce1.innerHTML;
             Dulce1.innerHTML=Temp;
+
           }
         }
       }
   }
+
+  function EliminacionMovimiento(Fila,Col){
+    var PosicionesEliminadas=[];
+    var ReducirX=true;
+    var ReducirY=true;
+    var AumentarX=true;
+    var AumentarY=true;
+    PosicionesEliminadas.push(Fila+","+Col);
+    var AdelanteX=Col;
+    var AtrasX=Col;
+    do{
+    var Continuar=false;
+    ReducirX=AtrasX>0;
+    if(ReducirX){
+    AtrasX--;
+    }
+    AumentarX=AdelanteX<6;
+    if(AumentarX){
+    AdelanteX++;
+    }
+    var Dulce1=document.getElementById(Fila+","+Col).innerHTML;
+    var Dulce2=document.getElementById(Fila+","+AtrasX).innerHTML;
+    if(Dulce1==Dulce2 && (Fila+","+Col)!=(Fila+","+AtrasX) && AtrasX){
+      PosicionesEliminadas.push(Fila+","+AtrasX);
+      Continuar=true;
+    }
+
+    Dulce2=document.getElementById(Fila+","+AdelanteX).innerHTML;
+    if(Dulce1==Dulce2 && (Fila+","+Col)!=(Fila+","+AdelanteX) && AdelanteX){
+      PosicionesEliminadas.push(Fila+","+AdelanteX);
+      Continuar=true;
+    }
+    if(Continuar){
+      if(!(ReducirX ||AumentarX )){
+        Continuar=false;
+      }
+    }
+  }while (Continuar)
+  if(PosicionesEliminadas.length>=3){
+    console.log("Eliminacion primera");
+    Eliminacion=true;
+  }else{
+    PosicionesEliminadas=[];
+  }
+  if(PosicionesEliminadas.length==0){
+      PosicionesEliminadas.push(Fila+","+Col);
+      var AdelanteY=Fila;
+      var AtrasY=Fila;
+      do{
+      var Continuar=false;
+
+      ReducirY=AtrasY>0;
+      if(ReducirY){
+      AtrasY++;
+      }
+
+      AumentarY=AdelanteY<6;
+      if(AumentarY){
+      AdelanteY++;
+      }
+      var Dulce1=document.getElementById(Fila+","+Col).innerHTML;
+      var Dulce2=document.getElementById(AtrasY+","+Col).innerHTML;
+      if(Dulce1==Dulce2 && (Fila+","+Col)!=(AtrasY+","+Col) && AtrasY){
+        PosicionesEliminadas.push(AtrasY+","+Col);
+        Continuar=true;
+      }
+
+      Dulce2=document.getElementById(AdelanteY+","+Col).innerHTML;
+      if(Dulce1==Dulce2 && (Fila+","+Col)!=(AdelanteY+","+Col) && AdelanteY){
+        PosicionesEliminadas.push(AdelanteY+","+Col);
+        Continuar=true;
+      }
+      if(Continuar){
+        if(!(ReducirY ||AumentarY )){
+          Continuar=false;
+        }
+      }
+    }while (Continuar)
+    if(PosicionesEliminadas.length>=3){
+      console.log("Eliminacion Segunda");
+      Eliminacion=true;
+    }else{
+      PosicionesEliminadas=[];
+    }
+  }
+  if(Eliminacion){
+    for(var i=0; i<PosicionesEliminadas.length;i++){
+      document.getElementById(PosicionesEliminadas[i]).innerHTML="";
+      ContadorPuntos+=20;
+      document.getElementById('score-text').innerHTML=ContadorPuntos;
+    }
+      RemplazarDulces(PosicionesEliminadas);
+  }
+}
+
   function EliminaciónDulces(){
       var PosicionesEliminadas=[];
       var Eliminacion=false;
@@ -139,17 +236,16 @@ var ContadorPuntos=0;
       }
       if(Eliminacion){
         for(var i=0; i<PosicionesEliminadas.length;i++){
-            //$( "#"+PosicionesEliminadas[i] ).effect( "explode","slow","5s" );
           document.getElementById(PosicionesEliminadas[i]).innerHTML="";
           ContadorPuntos+=20;
           document.getElementById('score-text').innerHTML=ContadorPuntos;
         }
-        RemplazarDulces(PosicionesEliminadas);
+		      RemplazarDulces(PosicionesEliminadas);
       }
-        return Eliminacion;
+      RevisarJuego();
     }
 
-    function RemplazarDulces(PosicionesDulce){
+	    function RemplazarDulces(PosicionesDulce){
 
       for(var i=0; i<PosicionesDulce.length;i++){
         var Coordenadas=PosicionesDulce[i].split(',');
@@ -159,24 +255,23 @@ var ContadorPuntos=0;
           do
           {
             var Repetir=false;
-
-            if(Y==0)
-            {
-              document.getElementById(X+","+Y).innerHTML=GenerarDulce();
-              Repetir=false;
-            }else{
-            SiguienteY--;
-            if(document.getElementById(X+","+SiguienteY).innerHTML!=""){
-              document.getElementById(X+","+Y).innerHTML=document.getElementById(X+","+SiguienteY).innerHTML;
-              document.getElementById(X+","+SiguienteY).innerHTML="";
-              PosicionesDulce.push(X+","+SiguienteY);
-            }else{
-              Repetir=true;
-            }
-            }
-
-          }
-          while (Repetir);
+            if(document.getElementById(X+","+Y).innerHTML==""){
+               if(SiguienteY==0)
+               {
+                 document.getElementById(X+","+Y).innerHTML=GenerarDulce();
+                 Repetir=false;
+               }else{
+               SiguienteY--;
+               if(document.getElementById(X+","+SiguienteY).innerHTML!=""){
+                 document.getElementById(X+","+Y).innerHTML=document.getElementById(X+","+SiguienteY).innerHTML;
+                 document.getElementById(X+","+SiguienteY).innerHTML="";
+                 PosicionesDulce.push(X+","+SiguienteY);
+               }else{
+                 Repetir=true;
+               }
+               }
+           }
+          }while (Repetir);
       }
 
     }

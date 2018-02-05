@@ -2,20 +2,21 @@ var Segundo=0;
 var SegundoText="";
 var Minuto=2;
 var MinutoText="";
+var IntervalorTiempo="";
 
 var Contador=document.getElementById('timer');
-function InicioJuego(){
+function ControlTiempo(){
   if(document.getElementById('btn-reinicio').innerHTML=="Iniciar"){
     document.getElementById('btn-reinicio').innerHTML="Reiniciar";
-    DibujarTablero();
     ControlConteo();
   }else{
     location.reload();
   }
 }
 
+
 function ControlConteo(){
-  window.setTimeout(ConteoRegresivo, 1000);
+  IntervalorTiempo= setInterval(function(){ ConteoRegresivo() }, 1000);
 }
 
 function ConteoRegresivo(){
@@ -39,9 +40,8 @@ function ConteoRegresivo(){
   }
   document.getElementById('timer').innerHTML=MinutoText+":"+SegundoText;
   if(Minuto==0 && Segundo==0){
+    clearInterval(IntervalorTiempo);
     FinDelJuego();
-  }else{
-    ControlConteo();
   }
 }
 function FinDelJuego(){
