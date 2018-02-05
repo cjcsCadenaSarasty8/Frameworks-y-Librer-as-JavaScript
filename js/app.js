@@ -159,6 +159,7 @@ var ContadorPuntos=0;
       document.getElementById('score-text').innerHTML=ContadorPuntos;
     }
       RemplazarDulces(PosicionesEliminadas);
+      return true;
   }
 }
 
@@ -242,7 +243,7 @@ var ContadorPuntos=0;
         }
 		      RemplazarDulces(PosicionesEliminadas);
       }
-      RevisarJuego();
+      setTimeout(function(){ RevisarJuego(); }, 1000);
     }
 
 	    function RemplazarDulces(PosicionesDulce){
